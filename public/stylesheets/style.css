@@ -1,0 +1,91 @@
+body,div,section,header,h1,h2,h3,h4,h5,h6 {
+  padding: 0px;
+  margin: 0px;
+  font: 14px "微软雅黑", Helvetica, Arial, sans-serif;
+}
+body{
+	overflow: hidden;
+}
+a {
+  color: #00B7FF;
+  text-decoration: none;
+  color: #222;
+  cursor: pointer;
+}
+ul li{
+	list-style: none;
+	float: left;
+}
+header{
+	background: #F2f2f2;
+	width: 100%;
+}
+header div{
+	width: 1200px;
+	height: 50px;
+	margin: 0 auto;
+	line-height: 50px;
+	text-align: right;
+}
+header div a{
+	color: #87CEFF;
+}
+#login {
+	text-align: center;
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	margin-left: -200px;
+	margin-top: -150px;  
+	width: 400px;
+	height: 300px;
+	border: 1px solid #aaa;
+	border-radius: 3px;
+	background: #fff;
+}
+#login div {
+	width: 390px;
+	height: 40px;
+	background: #f2f2f2;
+	font-size: 20px;
+	color: #222;
+	text-align: left;
+	line-height: 40px;
+	padding: 0 5px;
+}
+#login div a {
+	color: #999;
+	float: right;
+}
+#username {
+
+}
+.productList{
+	padding: 50px 0 0;
+	width: 1200px;
+	margin: 0 auto;
+	height: 500px;
+	display: flex;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+}
+.productList li{
+	height: 250px;
+	width: 20%;
+}
+.productList li h4{
+	margin:0 5%;
+}
+.productList li h4:first-child,.value h4:first-child{
+	font-size: 20px;
+}
+.productList li h4:nth-child(2) span,.value h4:nth-child(2) span{
+	color: red;
+}
+.productList li img{
+	width: 90%;
+	margin: 5% 5% 0;
+}
+#page{
+	text-align: center;
+}

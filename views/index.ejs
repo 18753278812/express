@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  	<head>
+    	<title></title>
+    	<link rel='stylesheet' href='/stylesheets/style.css' />
+    	<!-- <script type="text/javascript" src="javascripts/style.js"></script> -->
+    	<!-- <script type="text/javascript">
+                    /*window.onload = function(){
+                        var page = document.getElementById('page').value;
+                        var arr = [1,page - 1];
+        
+                        ajax({
+                            url: 'http://localhost:3000/users/list',
+                            type: 'post',
+                            data: '',
+                            success: function(data){
+                                console.log(data);
+                            }
+                        })
+                    }*/
+            
+        </script> -->
+  	</head>
+  	<body>
+    	<header>
+    		<% if(!uname){ %>
+                <%  var str = new Buffer(encodeURIComponent(arr)).toString('base64'); %>
+    			<div>请<a href="/login?pageNo=<%= pageNo %>&totalPage=<%= totalPage %>&count=<%= count %>&arr=<%= str %>">登录</a>,还没有账号<a href="/resiger?pageNo=<%= pageNo %>&totalPage=<%= totalPage %>&count=<%= count %>&arr=<%= str %>">立即注册</a></div>
+    		<% } else { %>
+				<div>
+					欢迎,<%= uname %><a href="/logout">注销</a>
+					<form method="post" action="/users/publish" enctype="multipart/form-data">
+						<label for="style">产品名称：</label><input type="text" name="style" id="style" />
+						<label for="price">产品价格：</label><input type="text" name="price" id="price" />
+                        <label for="imgfile">选择图片：</label><input type="file" name="imgfile" id="imgfile" accept="image/png,image/jpg" multiple="multiple" />
+						<input type="submit" value="发布" />
+					</form>
+				</div>
+			<% } %>
+			<% if(title != '') { %>
+				<div id="login">
+					<div><%= title %><a href="/?pageNo=<%= pageNo %>">X</a></div>
+					<form method="post" action="<%= type %>">
+						<label for="username">用户名：</label><input type="text" name="username" id="username" /><br />
+						<label for="password">密　码：</label><input type="password" name="password" id="password" /><br />
+						<input type="submit" value="<%= title %>" id="btn"/>
+					</form>
+				</div>
+			<% } %>
+    	</header>
+        <session id="list">
+            <ul class="productList">
+                <% JSON.parse(arr).forEach(function(item,index){%>
+                    <li><a href="/detail?uid=<%= item.uid %> ">
+                        <h4><%= item.type %></h4>
+                        <h4>价格：<span><%= item.price %></span></h4>
+                        <h4>发布人: <%= item.form %></h4>
+                        <% var imgfile = new Buffer(item.imgfile,"base64").toString() %>
+                        <img src='<%= imgfile %>' />
+                    </a></li>
+                <% }) %>
+            </ul>
+            <div id="page">
+                <a href='/users/list?pageNo=1'>首页</a>
+                <a href='/users/list?pageNo=<%= pageNo > 1 ? parseInt(pageNo)-1 : pageNo %>'>上一页</a>
+                <%= pageNo %>/<%= totalPage %>
+                <a href='/users/list?pageNo=<%= pageNo < totalPage ? parseInt(pageNo)+1 : pageNo%>'>下一页</a>
+                <a href='/users/list?pageNo=<%= totalPage %>'>尾页</a>
+                共<%= count %>条记录
+            </div>
+        </session>
+  	</body>
+</html>

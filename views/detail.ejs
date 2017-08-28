@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+  	<head>
+    	<title><%= obj.type %></title>
+    	<link rel='stylesheet' href='/stylesheets/style.css' />
+    </head>
+    <style type="text/css">
+		body,div,section,h4,header{
+			padding: 0;
+			margin: 0;
+		}
+        body{
+            height: auto;
+        }
+        .left{
+            position: absolute;
+            width: 400px;
+        }
+        .small{
+            width: 400px;
+        }
+        .small img{
+            width: 400px;
+        }
+        .big{
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: none;
+            overflow: hidden;
+            width: 400px;
+            height: 300px;
+        }
+        .big img{
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .scan{
+            width: 80px;
+            height: 60px;
+            background: rgba(100,100,100,.6);
+            position: absolute;
+            display: none;
+            top: 0;
+            left: 0;
+            cursor: move;
+        }
+        .right{
+            position: absolute;
+            left: 500px;
+            top: 0px;
+        }
+        #imgS{
+            position: relative;
+            width: 400px;
+            height: 300px;
+            overflow: hidden;
+        }
+        #detail{
+            width: 1200px;
+            margin: 70px auto 0;
+            position: relative;
+            height: 300px;
+        }
+        .value{
+            width: 250px;
+        }
+        .context{
+            position: relative;
+            width: 1200px;
+            margin: 0 auto;
+            padding: 5%;
+            overflow: hidden;
+        }
+        .context div{
+            height: 102px;
+            width: 913px;
+        }
+        .txt{
+            margin: 0 auto;
+            width: 800px;
+            height: 100px;
+            resize: none;
+            float:left;
+        }
+        .btn{
+            height: 104px;
+            width: 102px;
+        }
+    </style>
+    <script type="text/javascript">
+        window.onload = function(){
+            var scan = document.getElementById('scan');
+            var big = document.getElementById('big');
+            var imgB = big.getElementsByTagName('img')[0];
+            var detail = document.getElementById('detail');
+            var imgS = document.getElementById('imgS');
+            small.onmouseover = function(){
+                scan.style.display = "block";
+                big.style.display = "block";
+            }
+            small.onmouseout = function(){
+                scan.style.display = "none";
+                big.style.display = "none";
+            }
+            small.onmousemove = function(even){
+                var e = even || window.event;
+                var l = e.clientX - detail.offsetLeft - scan.offsetWidth / 2;
+                var t = e.clientY - detail.offsetTop - scan.offsetHeight / 2;
+                if (l > imgS.offsetWidth - scan.offsetWidth){
+                    l = imgS.offsetWidth - scan.offsetWidth;
+                } else if (l < 0){
+                    l = 0;
+                }
+                if (t > imgS.offsetHeight - scan.offsetHeight){
+                    t = imgS.offsetHeight - scan.offsetHeight;
+                } else if (t < 0) {
+                    t = 0;
+                }
+                scan.style.left = l + "px";
+                imgB.style.left = -l * (big.offsetWidth / scan.offsetWidth) / (imgB.offsetWidth / imgS.offsetWidth) + "px"; 
+                scan.style.top = t + "px";
+                imgB.style.top = -t * (big.offsetHeight / scan.offsetHeight) / (imgB.offsetHeight / imgS.offsetHeight) + "px"; 
+            }
+        }
+    </script>
+    <body>
+    <% if(!obj.uname) { %>
+		请登录，<a href="/">点此返回</a>
+    <% }else{ %>
+		欢迎,<%= obj.uname %><a href="/logout">注销</a>
+    <section id="detail">
+		<div class="left">
+            <% var imgfile = new Buffer(obj.imgfile,"base64").toString() %>
+            <% console.log(obj) %>
+            <div class="small" id="small">
+                <div id="imgS">
+                    <img src="<%= imgfile %>" ondragstart="return false;"/>
+                    <div class="scan" id="scan" ></div>
+                </div> 
+            </div> 
+        </div>
+		<div class="right">
+            <div class="big" id="big">
+                <img src = "<%= imgfile %>" />
+            </div>
+            <div class="value">
+                <h4><%= obj.type %></h4>
+                <h4>价格：<span><%= obj.price %></span></h4>
+                <h4>发布人: <%= obj.form %></h4>
+            </div>
+        </div>
+    </section>
+    <section id="context" class="context">
+        <div><form  method="post" action="/addtxt">
+            <input name="uid" value="<%= obj.uid %>" style="display: none"/>
+            <textarea class="txt" id="txt" name="txt" required></textarea>
+            <input class="btn" type="submit" val="发布" />
+        </form></div>
+        <ul>
+            <% console.log(obj.context) %>
+            <% if(obj.context.length == 0){ %>
+                还没有人发表评论,快去抢沙发
+            <% } else { %>
+                <% for(var i = 0; i < obj.context.length; i++){ %>
+                    <li><%= obj.context[i].username %>说：<%= obj.context[i].txt %></li><br />
+                <% } %>
+            <% } %>
+        </ul>
+    </section>
+    <% } %>
+    </body>
+</html>
